@@ -136,8 +136,9 @@ mongoose.connect('mongodb://localhost:27017/NotesDB').then(function () {
 
 //step:4(EXPRESS) Start server on port
 //here we can add the callback function but the callback function is optional,without callback function the app.listen could be "app.listen(5000)" and with callback function the app.listen could be "app.listen(5000,function(){ console.log('Server started on port 5000');})", the callback function advantage is that we can easily identify the server is started when console message printed in  the terminal 
-app.listen(5000, function () {
-    console.log('Server started on port 5000');
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, function () {
+    console.log('Server started on port:'+ PORT);
 });
 
 

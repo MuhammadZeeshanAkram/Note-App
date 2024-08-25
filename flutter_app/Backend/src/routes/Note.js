@@ -1,5 +1,5 @@
 const express=require('express');
-const Router=express.Router();
+const router=express.Router();
 const Note=require('./../models/Note');
 
 router.post("/list",async function (req, res) {//here list location is added and userid is also added
