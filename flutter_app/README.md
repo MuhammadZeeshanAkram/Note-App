@@ -1,34 +1,16 @@
-//THIS IS THE INITIAL SETUP FOR THE SERVER.JS
-//step:1 Initialize express
-const express=require('express');
+# flutter_app
 
-//step:2 Initialize app using express
-const app=express();
+A new Flutter project.
 
+## Getting Started
 
+This project is a starting point for a Flutter application.
 
-//step:3 Define routes
-//home page route(/)
-app.get("/",function(req,res){
-    res.send('This is the home page');
-});
-//notes page route(/notes)
-app.get("/notes",function(req,res){
-    res.send('This is the notes page');
-});
+A few resources to get you started if this is your first Flutter project:
 
-//step:4 Start server on port
-//here we can add the callback function but the callback function is optional,without callback function the app.listen could be "app.listen(5000)" and with callback function the app.listen could be "app.listen(5000,function(){ console.log('Server started on port 5000');})", the callback function advantage is that we can easily identify the server is started when console message printed in  the terminal 
-app.listen(5000,function(){
-    console.log('Server started on port 5000');
-});
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-
-//Setup for mongooose used to connect database with the server
-//step:1 Initialize mongoose
-const mongoose=require('mongoose');
-
-//step:2 Connect to database
-mongoose.connect('mongodb://localhost:27017/NotesDB').then(function(){
-    
-})
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
