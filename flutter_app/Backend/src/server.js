@@ -5,6 +5,7 @@
 // First we were trying to open the server  in localhost:5000 by (node server.js) but now after downloading the nodemon we use (nodemon server.js) to start the server
 //we have also added ("dev":"nodemon server.js") in the shorcuts(script in package.json file), when we run (npm run dev) it will automatically start the server through nodemon
 //we changed ("dev":"nodemon server.js") to ("dev":"nodemon src/server.js") ,("dev":"node server.js") to ("dev":"node src/server.js") because we moved the server.js file to folder i.e src
+//body-parser is used for the postman as it never understands the json format data nor url typpe of data
 
 //-------------------------------------------------------------------------------//
 //WE FIRST STARTS WITH EXPRESS WITH THE GIVEN STEPS AND THEN INTEGRATE THE MONGOOSE WITH THE EXPRESS
@@ -24,6 +25,9 @@ const mongoose = require('mongoose');
 //step:1(MODEL) importing the schema from the models
 const Note = require('./models/Note');
 
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }));//used for the postman as it never understands the json format data nor url typpe of data and extended false means that it will not understand the nested json data in the post request
+app.use(bodyParser.json());
 
 //step:2(MODEL) (updated 1st time)
 // mongoose.connect('mongodb://localhost:27017/NotesDB').then(function () {
@@ -57,23 +61,49 @@ mongoose.connect('mongodb://localhost:27017/NotesDB').then(function () {
         res.send('This is the home page');
     });
     //notes page route(/notes)
-    app.get("/notes/list",async function (req, res) {//here list location is added
-        var notes= await Note.find();//it means that it will find in the database the schema/model of this kind in the database of the notesDB and then store it in the notes variable
-        //var notes= await Note.find(); means that notes is promise and the .find() is async function
-        res.json(notes);//then the data which is stored in the notes variable will be displayed in the json format
-    });
-    app.get("/notes/add",async function (req, res) {
-        var newNote=new Note({
-            id:'001',
-            userid:'zeeshansiddiqui9790@gmail.com',
-            title:'My first Note',
-            content:'Note Content',
-            //we are not saying dateadded here because it will stored there by default
-        });
-        await newNote.save();//Then the data is saved to the database
-        const response={message:'New Note Created'};//when the data is saved then the response variable  will be called and that  prints the message(new note created)
-        res.json(response);//it will  display the message(new note created) in the json format 
-    })
+    // app.post("/notes/list",async function (req, res) {//here list location is added and userid is also added
+    //     var notes= await Note.find({userid:req.params.userid});
+    //     //here userid is the parameter which is passed in the url
+    //     //it means that it will find in the database the schema/model of this kind of userid in the database of the notesDB and then store it in the notes variable
+    //     //var notes= await Note.find(); means that notes is promise and the .find() is async function
+    //     res.json(notes);//then the data which is stored in the notes variable will be displayed in the json format
+    // });
+    // app.post("/notes/add",async function (req, res) {
+        
+    //     var newNote=new Note({
+    //         id:req.body.id,
+    //         userid:req.body.userid,
+    //         title:req.body.title,
+    //         content:req.body.content,
+    //         //we are not saying dateadded here because it will stored there by default
+    //     });
+    //     await newNote.save();//Then the data is saved to the database
+    //     const response={message:'New Note Created'+`id:${req.body.id}`};//when the data is saved then the response variable  will be called and that  prints the message(new note created) and prints the id also
+    //     res.json(response);//it will  display the message
+    // })
+    // app.post("/notes/delete",async function(req,res){
+    //     await Note.deleteOne({id:req.body.id});
+    //     const response={message:"Note Deleted"}+`id:${req.body.id}`;//when the data is saved then the response variable  will be called and that  prints the message(note deleted) and prints the id also
+    //     res.json(response);//it will  display the message
+    // })
+    
+
+
+    // the app.get runs in the browser but here we cannot do it as we cannot put the info manually in the code, we need some frontend to give the resquest to add the notes and to do this , we changed get reqeust to post request,and after adding the post we have to add the response.body in order to fetch the data from the frontend
+    // app.get("/notes/add",async function (req, res) {
+    //     var newNote=new Note({
+    //         id:'0002',
+    //         userid:'bhai9790@gmail.com',
+    //         title:'My Second Note',
+    //         content:'Note Content',
+    //         //we are not saying dateadded here because it will stored there by default
+    //     });
+    //     await newNote.save();//Then the data is saved to the database
+    //     const response={message:'New Note Created'};//when the data is saved then the response variable  will be called and that  prints the message(new note created)
+    //     res.json(response);//it will  display the message(new note created) in the json format 
+    // })
+    const noteRouter=require('./routes/Note');
+    app.use('/notes',noteRouter);
 });
 
 
